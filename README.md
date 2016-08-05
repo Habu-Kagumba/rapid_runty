@@ -5,7 +5,7 @@
 
 # Rapid Runty
 
-**Rapid Runty** is a minimal framework to get your web project up and running in seconds.
+**Rapid Runty** is a minimal web framework to get your web project up and running in seconds.
 
 ## Installation
 
