@@ -5,7 +5,7 @@
 
 # Rapid Runty
 
- [![Dependency Status](https://gemnasium.com/badges/bitbucket.org/habu_kagumba/rapid_runty.svg)](https://gemnasium.com/bitbucket.org/habu_kagumba/rapid_runty) [ ![Codeship Status for habu_kagumba/rapid_runty](https://codeship.com/projects/f506dfd0-3e2e-0134-298e-365d6082cf0e/status?branch=master) ](https://codeship.com/projects/167314) [![Coverage Status](https://coveralls.io/repos/bitbucket/habu_kagumba/rapid_runty/badge.svg?branch=master)](https://coveralls.io/bitbucket/habu_kagumba/rapid_runty?branch=master) [![codebeat badge](https://codebeat.co/badges/1c48e76c-c7c7-484a-a5d5-7c397b4fb429)](https://codebeat.co/projects/bitbucket-org-habu_kagumba-rapid_runty)
+ [![Gem Version](https://badge.fury.io/rb/rapid_runty.svg)](https://badge.fury.io/rb/rapid_runty) [![Dependency Status](https://gemnasium.com/badges/bitbucket.org/habu_kagumba/rapid_runty.svg)](https://gemnasium.com/bitbucket.org/habu_kagumba/rapid_runty) [ ![Codeship Status for habu_kagumba/rapid_runty](https://codeship.com/projects/f506dfd0-3e2e-0134-298e-365d6082cf0e/status?branch=master) ](https://codeship.com/projects/167314) [![Coverage Status](https://coveralls.io/repos/bitbucket/habu_kagumba/rapid_runty/badge.svg?branch=master)](https://coveralls.io/bitbucket/habu_kagumba/rapid_runty?branch=master) [![codebeat badge](https://codebeat.co/badges/1c48e76c-c7c7-484a-a5d5-7c397b4fb429)](https://codebeat.co/projects/bitbucket-org-habu_kagumba-rapid_runty)
 
 **Rapid Runty** is a minimal web framework to get your web project up and running in seconds.
 
