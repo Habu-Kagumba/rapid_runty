@@ -1,11 +1,16 @@
-require 'spec_helper'
+require "spec_helper"
 
-describe RapidRunty do
-  it 'has a version number' do
-    expect(RapidRunty::VERSION).not_to be nil
+describe "KitchenSink application" do
+  include Rack::Test::Methods
+
+  def app
+    KitchenSink::Application.new
   end
 
-  it 'does something useful' do
-    expect(false).to eq(true)
+  it "return a rack response" do
+    get "/"
+
+    expect(last_response).to be_ok
+    expect(last_response.body).to eql "Hello"
   end
 end

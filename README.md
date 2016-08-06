@@ -7,7 +7,7 @@
 
 [ ![Codeship Status for habu_kagumba/rapid_runty](https://codeship.com/projects/40afab90-3dfa-0134-2ce5-365d6082cf0e/status?branch=master) ](https://codeship.com/projects/167291)
 
-**Rapid Runty** is a minimal framework to get your web project up and running in seconds.
+**Rapid Runty** is a minimal web framework to get your web project up and running in seconds.
 
 ## Installation
 
