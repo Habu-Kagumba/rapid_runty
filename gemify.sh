@@ -19,6 +19,7 @@ GEM_BUILD_NAME=$(gem build "$GEM_NAME$GEMSPEC_SUFFIX" |  awk '/File/ {print $2}'
 # create credentials file
 echo "---" >> ~/.gem/credentials
 echo ":rubygems_api_key: 0321b65c9cdec4e3921117ccf08c16f4" >> ~/.gem/credentials
+chmod 0600 ~/.gem/credentials
 
 # if above succeeded, then push to rubygems.org using the gem that was compiled
 gem push $GEM_BUILD_NAME
