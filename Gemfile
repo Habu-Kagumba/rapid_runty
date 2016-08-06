@@ -1,4 +1,7 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-# Specify your gem's dependencies in rapid_runty.gemspec
 gemspec
+
+group :development, :test do
+  gem "poltergeist", git: "git://github.com/teampoltergeist/poltergeist.git"
+end
