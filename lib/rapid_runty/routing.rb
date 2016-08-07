@@ -6,7 +6,7 @@ module RapidRunty
     #
     # @return [Controller, Action] array
     def get_controller_action(env)
-      _, controller, action, other = env["PATH_INFO"].split("/", 4)
+      _, controller, action, _other = env["PATH_INFO"].split("/", 4)
       controller = controller.capitalize
       controller += "Controller"
 
