@@ -3,14 +3,13 @@ require "spec_helper"
 describe "KitchenSink application" do
   include Rack::Test::Methods
 
-  def app
-    KitchenSink::Application.new
-  end
+  let!(:app) { KitchenSink::Application.new }
 
-  it "return a rack response" do
-    get "/"
+  describe "Rack responses" do
+    it "return default error for /favicon.ico" do
+      get "/favicon.ico"
 
-    expect(last_response).to be_ok
-    expect(last_response.body).to eql "Hello"
+      expect(last_response).to be_server_error
+    end
   end
 end
