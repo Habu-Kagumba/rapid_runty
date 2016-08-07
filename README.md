@@ -5,7 +5,7 @@
 
 # Rapid Runty
 
- [![Gem Version](https://badge.fury.io/rb/rapid_runty.svg)](https://badge.fury.io/rb/rapid_runty) [![Dependency Status](https://gemnasium.com/badges/bitbucket.org/habu_kagumba/rapid_runty.svg)](https://gemnasium.com/bitbucket.org/habu_kagumba/rapid_runty) [ ![Codeship Status for habu_kagumba/rapid_runty](https://codeship.com/projects/f506dfd0-3e2e-0134-298e-365d6082cf0e/status?branch=master) ](https://codeship.com/projects/167314) [![Coverage Status](https://coveralls.io/repos/bitbucket/habu_kagumba/rapid_runty/badge.svg?branch=master)](https://coveralls.io/bitbucket/habu_kagumba/rapid_runty?branch=master) [![codebeat badge](https://codebeat.co/badges/1c48e76c-c7c7-484a-a5d5-7c397b4fb429)](https://codebeat.co/projects/bitbucket-org-habu_kagumba-rapid_runty)
+[![Gem Version](https://badge.fury.io/rb/rapid_runty.svg)](https://badge.fury.io/rb/rapid_runty) [![Dependency Status](https://gemnasium.com/badges/github.com/andela-hkagumba/rapid_runty.svg)](https://gemnasium.com/github.com/andela-hkagumba/rapid_runty) [![Codeship Status for andela-hkagumba/rapid_runty](https://codeship.com/projects/c6f3c4d0-3efd-0134-9b91-6a8ca46930c1/status?branch=master) ](https://codeship.com/projects/167383) [![Coverage Status](https://coveralls.io/repos/github/andela-hkagumba/rapid_runty/badge.svg?branch=master)](https://coveralls.io/github/andela-hkagumba/rapid_runty?branch=master) [![codebeat badge](https://codebeat.co/badges/e5fef576-c696-4d14-9ca0-2ace5b758642)](https://codebeat.co/projects/github-com-andela-hkagumba-rapid_runty)
 
 **Rapid Runty** is a minimal web framework to get your web project up and running in seconds.
 

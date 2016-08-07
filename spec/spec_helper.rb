@@ -9,6 +9,7 @@ SimpleCov.formatters = [
 ]
 SimpleCov.start
 
+# Always use local version of RapidRunty
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require "rapid_runty"
 require "apps/kitchen_sink/config/application"

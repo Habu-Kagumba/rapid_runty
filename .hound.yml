@@ -1,0 +1,8 @@
+javascript:
+  enabled: false
+eslint:
+  enabled: false
+scss:
+  enabled: false
+ruby:
+  config_file: .rubocop.yml
