@@ -7,8 +7,6 @@ module RapidRunty
       @env = env
     end
 
-    def env
-      @env
-    end
+    attr_reader :env
   end
 end
