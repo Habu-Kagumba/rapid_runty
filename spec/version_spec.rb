@@ -1,7 +1,7 @@
-require "spec_helper"
+require 'spec_helper'
 
-describe "RapidRunty::VERSION" do
-  it "has a version number" do
+describe 'RapidRunty::VERSION' do
+  it 'has a version number' do
     expect(RapidRunty::VERSION).not_to be nil
   end
 end

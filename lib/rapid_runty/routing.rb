@@ -1,8 +1,11 @@
-require "rapid_runty/routes/dsl"
-require "rapid_runty/routes/route"
+require 'rapid_runty/routes/route'
 
 module RapidRunty
   class Application
-    include RapidRunty::Router::DSL
+    attr_reader :routes
+
+    def initialize
+      @routes = RapidRunty::Router::Routes.new
+    end
   end
 end

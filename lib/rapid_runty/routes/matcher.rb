@@ -1,60 +1,58 @@
-require "pathname"
+require 'pathname'
 
 module RapidRunty
   module Router
-    module Matcher #:nodoc:
+    ##
+    # Matches passed in path with array of application paths
+    module Matcher
       def self.match(*args)
         Base.match(*args)
       end
 
-      # rubocop:disable Metrics/LineLength
       class Base
         ##
         # Defines the route that matches the path
         #
+        # Example:
+        #
+        #   RapidRunty::Router::Matcher.match("/foo", [{url: "/", to: "root#index"}, {url: "/bar", to: "bar#index"}, {url: "/foo", to: "foo#index"}]) #=> ["/foo", [], { controller: "foo", action: "index" }]
+        #   RapidRunty::Router::Matcher.match("/04/01/01", [{url: "/:day/:month/:year", to: "date#find"}]) #=> ["/", ["04", "01", "01"], { controller: "date", action: "find" }]
         # @param path [String] path from ENV["PATH_INFO"]
-        # @param routes [Array] application defined routes
-        # @param options [Array] extra Hash options for the route
+        # @param application routes [Array] Array of Hash application defined routes
         #
         # Currently only supporting ":to" options which defines the "controller#action"
         #
-        # @return [matching_route, matched_placeholders] array
+        # @return [matching_route, matched_placeholders, matched_controller_action] array
         #
-        # Example:
-        #
-        #   RapidRunty::Router::Matcher.match("/foo", ["/", "/bar", "/foo"], [{ to: "foo#index" }]) #=> ["/foo", [], { controller: "Foo", action: "index" }]
-        #   RapidRunty::Router::Matcher.match("/04/01/01", ["/:day/:month/:year"], [{}]) #=> ["/", ["04", "01", "01"], nil]
-
-        def self.match(path, routes, options)
-          require'pry';binding.pry
+        def self.match(path, routes)
           path = Path.new(path)
-          url_patterns = routes.map do |route|
-            URLPattern.new(Array(route).first)
-          end
-          kontrollers = ControllerSetup.controller_action(options).first
+          url_patterns = routes.map { |route| URLPattern.new(route) }
 
           url_patterns.each do |pattern|
             return [
               pattern.to_s,
               pattern.placeholders,
-              kontrollers
+              ControllerSetup.controller_action(pattern.options)
             ] if pattern == path
           end
 
           [nil, [], {}]
         end
       end
-      # rubocop:enable Metrics/LineLength
 
-      class Path #:nodoc:
-        attr_accessor :parts, :ext
+      class Path
+        attr_accessor :parts, :ext, :options
 
         def initialize(path)
+          path = Pathname(path)
           self.parts, self.ext = split_path(path)
+        rescue TypeError
+          self.parts, self.ext = split_path(path[:url])
+          self.options = path[:to]
         end
 
         def to_s
-          "/" + self.parts.join("/") + self.ext
+          '/' + parts.join('/') + ext
         end
 
         private
@@ -62,53 +60,49 @@ module RapidRunty
         def split_path(path)
           path = path.to_s
           ext = Pathname(path).extname
-          path = path.sub(/#{ext}$/, "")
-          parts = path.split("/").reject { |part| part.empty? }
+          path = path.sub(/#{ext}$/, '')
+          parts = path.split('/').reject(&:empty?)
+          parts = [''] if path == '/'
           [parts, ext]
         end
       end
 
-      class URLPattern < Path #:nodoc:
-
+      class URLPattern < Path
         def placeholders
           return [] unless @match
 
           vars = []
-          self.parts.each_with_index do |part,i|
-            vars << @match.parts[i] if part[0] == ?:
+          parts.each_with_index do |part, i|
+            vars << @match.parts[i] if part[0] == ':'
           end
           vars
         end
 
-        def ==(path)
-          is_match = size_match?(path) && parts_match?(path)
-          @match = path if is_match
+        def ==(other)
+          is_match = size_match?(other) && parts_match?(other)
+          @match = other if is_match
           is_match
         end
 
         private
 
         def size_match?(path)
-          self.parts.size == path.parts.size
+          parts.size == path.parts.size
         end
 
         def parts_match?(path)
-          self.parts.each_with_index do |part, i|
-            return true if part[0] == ?: || path.parts[i] == part
+          parts.each_with_index do |part, i|
+            return true if part[0] == ':' || path.parts[i] == part
           end
           false
         end
       end
 
-      class ControllerSetup #:nodoc:
-        attr_accessor :controller_action
-
+      class ControllerSetup
         def self.controller_action(options)
-          options.map do |opt|
-            Hash[
-              %w(controller action).zip opt[:to].split("#")
-            ]
-          end
+          Hash[
+            %w(controller action).zip options.split('#')
+          ]
         end
       end
     end
