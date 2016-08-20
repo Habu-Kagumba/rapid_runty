@@ -1,13 +1,17 @@
-require "spec_helper"
+require 'spec_helper'
 
-describe "KitchenSink application" do
-  include Rack::Test::Methods
+describe RapidRunty do
+  let!(:app) { RapidRunty::Application.new }
 
-  let!(:app) { KitchenSink::Application.new }
+  describe RapidRunty::Application do
+    it 'defines a #call method' do
+      expect(app).to respond_to :call
+    end
+  end
 
-  describe "Rack responses" do
-    it "return default error for /favicon.ico" do
-      get "/favicon.ico"
+  describe 'Rack responses' do
+    it 'return default error for /favicon.ico' do
+      get '/favicon.ico'
 
       expect(last_response).to be_server_error
     end

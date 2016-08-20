@@ -1,5 +1,5 @@
-require "rapid_runty/routing"
-require "rapid_runty/controller"
+require 'rapid_runty/routing'
+require 'rapid_runty/controller'
 
 module RapidRunty
   ##
@@ -25,11 +25,14 @@ module RapidRunty
       verb = request.request_method.downcase.to_sym
       path = Rack::Utils.unescape(request.path_info)
 
-      return [500, {}, []] if path == "/favicon.ico"
+      return [500, {}, []] if path == '/favicon.ico'
 
-      route = self.routes.match(verb, path)
-      [404, {"Content-Type" => "text/html"}, "404 not found"] if route.nil?
-      [200, { "Content-Type" => "text/html" }, [route]]
+      route = routes.match(verb, path)
+      if route.nil?
+        [404, { 'Content-Type' => 'text/html' }, '404 not found']
+      else
+        [200, { 'Content-Type' => 'text/html' }, ["Hello RapidRunty"]]
+      end
     end
   end
 end

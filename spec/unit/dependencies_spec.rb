@@ -1,17 +1,16 @@
-require "spec_helper"
+require 'spec_helper'
 
-RSpec.describe "DependenciesSpecs" do
-  describe "Object.const_missing" do
-    let(:dummy_controller) { FooController.new }
-    let!(:existing_controller) { IndexController.new({}) }
+describe 'DependenciesSpecs' do
+  describe 'Object.const_missing' do
+    let(:dummy_constant) { Fooconstant.new }
+    let!(:existing_constant) { RapidRunty::Controller.new({}) }
 
-    it "fails to load non-existent file" do
-      expect { dummy_controller }.to raise_error LoadError
+    it 'fails to load non-existent file' do
+      expect { dummy_constant }.to raise_error LoadError
     end
 
-    it "finds existing files and requires them" do
-      expect { existing_controller }.not_to raise_error LoadError
-      expect(existing_controller).to respond_to :env
+    it 'finds existing files and requires them' do
+      expect { existing_constant }.not_to raise_error LoadError
     end
   end
 end
