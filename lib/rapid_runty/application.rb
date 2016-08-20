@@ -1,7 +1,8 @@
-require "rapid_runty/routing"
-require "rapid_runty/controller"
+require 'rapid_runty/routing'
+require 'rapid_runty/controller'
 
 module RapidRunty
+  ##
   # Main framework Application class. Entry point for all requests.
   #
   # Example:
@@ -19,11 +20,19 @@ module RapidRunty
     #
     # @return [status, {headers}, [response]] array
     def call(env)
-      return [500, {}, []] if env["PATH_INFO"] == "/favicon.ico"
-      controller_class, action = get_controller_action(env)
-      controller = controller_class.new(env)
-      response = controller.send(action)
-      [200, { "Content-Type" => "text/html" }, [response]]
+      request = Rack::Request.new(env)
+
+      verb = request.request_method.downcase.to_sym
+      path = Rack::Utils.unescape(request.path_info)
+
+      return [500, {}, []] if path == '/favicon.ico'
+
+      route = routes.match(verb, path)
+      if route.nil?
+        [404, { 'Content-Type' => 'text/html' }, '404 not found']
+      else
+        [200, { 'Content-Type' => 'text/html' }, ["Hello RapidRunty"]]
+      end
     end
   end
 end
