@@ -1,3 +1,5 @@
+require 'rapid_runty/routes/matcher'
+
 module RapidRunty
   module Router
     ##
@@ -13,24 +15,54 @@ module RapidRunty
       # @param verb [String] HTTP verb extracted from Rack env
       # @param path [String] the url path extracted from Rack env
       #
-      # @return []
+      # @return A RapidRunty::Router::Route Instance:
+      #
+      # Example:
+      #   RapidRunty::Router::Routes.match("GET", "/foo/4") = #<RapidRunty::Router::Route options={"controller"=>"foo", "action"=>"bar"}, path="/foo/:id", placeholders=[], verb=:get
       def match(verb, path)
-        return nil if self.empty?
+        return nil if empty?
 
         verb = verb.to_s.downcase.strip.to_sym
 
-        routes = self.select { |route| route.verb == verb }
-        paths = routes.map { |route| route.path }
-        options = routes.map { |route| route.options }
+        routes = select { |route| route.verb == verb }
+        paths = routes.map { |route| { url: route.path }.merge route.options }
 
-        path, placeholders, kontroller_action = RapidRunty::Router::Matcher.
-          match(path, paths, options)
+        path, places, action = RapidRunty::Router::Matcher.match(path, paths)
         return nil if path.nil?
 
-        route = routes.detect { |router| router.path == path }
-        route.placeholders = placeholders
-        route.options = kontroller_action
+        route = routes.detect { |router| router.path == path }.clone
+        route.placeholders = places
+        route.options = action
         route
+      end
+
+      ##
+      # Provides familiar DSL to defining routes
+      #
+      # Example:
+      #   DemoApplication.routes.draw do
+      #     root "demo#index"
+      #     get "/demo", to: "demo#index"
+      #     get "/demo/new", to: "demo#new"
+      #     get "/demo/:id", to: "demo#show"
+      #     get "/demo/:id/edit", to: "demo#edit"
+      #     post "/demo/", to: "demo#create"
+      #     put "/demo/:id", to: "demo#update"
+      #     patch "/demo/:id", to: "demo#update"
+      #     delete "/demo/:id", to: "demo#destroy"
+      #   end
+      def draw(&block)
+        instance_eval(&block)
+      end
+
+      def root(controller)
+        get '/', to: controller
+      end
+
+      %w(get post put patch delete).each do |method_name|
+        define_method(method_name) do |path, options|
+          add(method_name.to_sym, path, options)
+        end
       end
     end
 

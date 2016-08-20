@@ -1,20 +1,29 @@
-require "simplecov"
-require "coveralls"
+require 'simplecov'
+require 'coveralls'
 
 Coveralls.wear!
 
 SimpleCov.formatters = [
-  SimpleCov::Formatter::HTMLFormatter,
-  Coveralls::SimpleCov::Formatter
+	SimpleCov::Formatter::HTMLFormatter,
+	Coveralls::SimpleCov::Formatter
 ]
 SimpleCov.start
 
 # Always use local version of RapidRunty
-$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
-$LOAD_PATH.unshift File.expand_path("../../spec", __FILE__)
-require "rapid_runty"
-require "apps/kitchen_sink/config/application"
-require "rspec"
-require "rack/test"
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift File.expand_path('../../spec', __FILE__)
 
-ENV["RACK_ENV"] = "test"
+require 'rapid_runty'
+require 'rspec'
+require 'rack/test'
+require 'capybara/rspec'
+require 'support/todoList/config/application'
+
+RSpec.configure do |config|
+	config.include Rack::Test::Methods
+end
+
+Capybara.app = Rack::Builder.
+  parse_file("#{__dir__}/support/todoList/config.ru").first
+
+ENV['RACK_ENV'] = 'test'
