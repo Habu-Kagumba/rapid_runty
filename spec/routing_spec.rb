@@ -1,16 +1,18 @@
-require "spec_helper"
+require 'spec_helper'
 
-describe "KitchenSink routing" do
-  include Rack::Test::Methods
+describe RapidRunty do
+  let!(:app) { RapidRunty::Application.new }
 
-  let!(:app) { KitchenSink::Application.new }
+  let!(:define_routes) do
+    app.routes.draw do
+      get '/demo', to: 'demo#index'
+      get '/demo/:id', to: 'demo#show'
+    end
+  end
 
-  it "retrieves the controller and action" do
-    get "index/hello"
+  it 'retrieves the controller and action' do
+    get '/demo'
 
-    env = last_request.env
-    exp_controller = Object.const_get "IndexController"
-    exp_action = "hello"
-    expect(app.get_controller_action(env)).to eql [exp_controller, exp_action]
+    expect(last_response.status).to be 200
   end
 end

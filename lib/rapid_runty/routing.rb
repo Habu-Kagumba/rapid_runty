@@ -1,17 +1,11 @@
+require 'rapid_runty/routes/route'
+
 module RapidRunty
   class Application
-    # Retrieve the controller and action method from the URL
-    #
-    # @param env [Hash] Rack environment Hash that includes CGI-like headers
-    #
-    # @return [Controller, Action] array
-    def get_controller_action(env)
-      _, controller, action, _other = env["PATH_INFO"].split("/", 4)
-      controller = controller.capitalize
-      controller += "Controller"
+    attr_reader :routes
 
-      # Lookup controller constant name and return [controller, action]
-      [Object.const_get(controller), action]
+    def initialize
+      @routes = RapidRunty::Router::Routes.new
     end
   end
 end
