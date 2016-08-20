@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'A minimal web framework'
   spec.description   = 'A minimal web framework to get your web project up '\
     'and running in seconds.'
-  spec.homepage      = 'https://github.com/andela-hkagumba/rapid_runty'
+  spec.homepage      = 'https://github.com/Habu-Kagumb/rapid_runty'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
