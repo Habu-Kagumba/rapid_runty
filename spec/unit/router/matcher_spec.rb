@@ -13,31 +13,27 @@ describe RapidRunty::Router::Matcher do
     end
 
     it 'return the matched route' do
-      expect(
-        matcher.match('/foo', routes)
+      expect(matcher.match('/foo', routes)).
+        to be_eql(
+          ['/foo', [], { 'controller' => 'foo', 'action' => 'index' }, []]
       )
-        .to be_eql ['/foo', [], { 'controller' => 'foo', 'action' => 'index' }]
 
-      expect(
-        matcher.match('/foo/4', routes)
+      expect(matcher.match('/foo/4', routes)).
+        to be_eql(
+          [
+            '/foo/:id',
+            ['4'],
+            { 'controller' => 'foo', 'action' => 'show' },
+            {'id' => '4'}
+          ]
       )
-        .to be_eql [
-          '/foo/:id',
-          ['4'],
-          { 'controller' => 'foo', 'action' => 'show' }
-        ]
 
-      expect(
-        matcher.match('/', routes)
-      )
-        .to be_eql ['/', [], { 'controller' => 'root', 'action' => 'home' }]
+      expect(matcher.match('/', routes)).
+        to be_eql ['/', [], { 'controller' => 'root', 'action' => 'home' }, []]
     end
 
     it 'return empty results of no match' do
-      expect(
-        matcher.match('/bar', routes)
-      )
-        .to be_eql [nil, [], {}]
+      expect(matcher.match('/bar', routes)).to be_eql [nil, [], {}, []]
     end
   end
 

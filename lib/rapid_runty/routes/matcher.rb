@@ -30,13 +30,13 @@ module RapidRunty
 
           url_patterns.each do |pattern|
             return [
-              pattern.to_s,
-              pattern.placeholders,
-              ControllerSetup.controller_action(pattern.options)
+              pattern.to_s, pattern.placeholders,
+              ControllerSetup.controller_action(pattern.options),
+              pattern.placeholder_hash
             ] if pattern == path
           end
 
-          [nil, [], {}]
+          [nil, [], {}, []]
         end
       end
 
@@ -78,6 +78,18 @@ module RapidRunty
           vars
         end
 
+        def placeholder_hash
+          if instance_variable_defined?(:@match) && !placeholders.empty?
+            url_parts = instance_variable_get(:@match)
+            pattern_var = parts.select { |part| part[0] == ':' }.first
+            var_index = parts.index(pattern_var)
+            return {
+              pattern_var.delete(':').to_s => url_parts.parts[var_index]
+            }
+          end
+          []
+        end
+
         def ==(other)
           is_match = size_match?(other) && parts_match?(other)
           @match = other if is_match
@@ -92,9 +104,9 @@ module RapidRunty
 
         def parts_match?(path)
           parts.each_with_index do |part, i|
-            return true if part[0] == ':' || path.parts[i] == part
+            return false unless part[0] == ':' || path.parts[i] == part
           end
-          false
+          true
         end
       end
 

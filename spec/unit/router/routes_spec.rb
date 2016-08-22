@@ -43,10 +43,4 @@ describe RapidRunty::Router::Routes do
       ).to be_nil
     end
   end
-
-  describe 'routes DSL' do
-    it 'provides routing DSL' do
-      expect(routes.size).to be_eql 3
-    end
-  end
 end
