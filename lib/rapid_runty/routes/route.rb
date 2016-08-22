@@ -18,20 +18,21 @@ module RapidRunty
       # @return A RapidRunty::Router::Route Instance:
       #
       # Example:
-      #   RapidRunty::Router::Routes.match("GET", "/foo/4") = #<RapidRunty::Router::Route options={"controller"=>"foo", "action"=>"bar"}, path="/foo/:id", placeholders=[], verb=:get
+      #   RapidRunty::Router::Routes.match("GET", "/foo/4") => #<RapidRunty::Router::Route options={"controller"=>"foo", "action"=>"bar"}, path="/foo/:id", placeholders=[], verb=:get
       def match(verb, path)
         return nil if empty?
 
         verb = verb.to_s.downcase.strip.to_sym
 
         routes = select { |route| route.verb == verb }
-        paths = routes.map { |route| { url: route.path }.merge route.options }
+        urls = routes.map { |route| { url: route.path }.merge route.options }
 
-        path, places, action = RapidRunty::Router::Matcher.match(path, paths)
-        return nil if path.nil?
+        url, var, action, param = RapidRunty::Router::Matcher.match(path, urls)
+        return nil if url.nil?
 
-        route = routes.detect { |router| router.path == path }.clone
-        route.placeholders = places
+        route = routes.detect { |router| router.path == url }.clone
+        route.placeholders = var
+        route.placeholder_hash = param
         route.options = action
         route
       end
@@ -67,13 +68,24 @@ module RapidRunty
     end
 
     class Route
-      attr_accessor :verb, :path, :options, :placeholders
+      attr_accessor :verb, :path, :options, :placeholders, :placeholder_hash
 
       def initialize(verb, path, options)
         self.verb = verb
         self.path = path
         self.options = options
         self.placeholders = nil
+        self.placeholder_hash = nil
+      end
+
+      def to_a
+        [
+          {
+            verb: verb,
+            path: path,
+            placeholders:  placeholders
+          }.merge(options)
+        ]
       end
     end
   end
