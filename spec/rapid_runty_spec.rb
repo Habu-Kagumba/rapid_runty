@@ -12,8 +12,7 @@ describe RapidRunty do
   describe 'Rack responses' do
     it 'return default error for /favicon.ico' do
       get '/favicon.ico'
-
-      expect(last_response).to be_server_error
+      expect(last_response.status).to be_eql 404
     end
   end
 end

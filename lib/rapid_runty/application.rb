@@ -1,5 +1,5 @@
 require 'rapid_runty/routing'
-require 'rapid_runty/controller'
+require 'rapid_runty/base_controller'
 
 module RapidRunty
   ##
@@ -18,21 +18,13 @@ module RapidRunty
     #
     # @param env [Hash] Rack environment Hash that includes CGI-like headers
     #
-    # @return [status, {headers}, [response]] array
+    # @return [status, {headers}, [response]]
     def call(env)
-      request = Rack::Request.new(env)
+      req = Rack::Request.new(env)
+      res = Rack::Response.new
 
-      verb = request.request_method.downcase.to_sym
-      path = Rack::Utils.unescape(request.path_info)
-
-      return [500, {}, []] if path == '/favicon.ico'
-
-      route = routes.match(verb, path)
-      if route.nil?
-        [404, { 'Content-Type' => 'text/html' }, '404 not found']
-      else
-        [200, { 'Content-Type' => 'text/html' }, ["Hello RapidRunty"]]
-      end
+      handle(env, req, res)
+      res.finish
     end
   end
 end
