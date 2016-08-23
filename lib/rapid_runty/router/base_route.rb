@@ -1,4 +1,4 @@
-require 'rapid_runty/routes/route'
+require 'rapid_runty/router/routes'
 
 module RapidRunty
   class Application
@@ -12,29 +12,29 @@ module RapidRunty
     # response or status message.
     #
     # @param env
-    # @param [Rack::Request] req
-    # @param [Rack::Response] res
-    def handle(env, req, res)
-      verb, path = route_args(req).values
+    # @param [Rack::Request] request
+    # @param [Rack::Response] response
+    def handle(env, request, response)
+      verb, path = route_args(request).values
 
-      route = routes.match(verb, path)
+      route = routes.find_route(verb, path)
       if route.nil?
-        not_found(res, path)
+        not_found(response, path)
       else
-        param = "&#{Rack::Utils.build_nested_query(route.placeholder_hash)}"
+        param = "&#{Rack::Utils.build_nested_query(route.placeholders)}"
         env['QUERY_STRING'] << param
         env.merge!(route.options)
-        res.write dispatch(env, route, res)
+        response.write dispatch(env, route, response)
       end
     end
 
     ##
     # Dispatch the Controller and it's action to be rendered
-    def dispatch(env, route, res)
+    def dispatch(env, route, response)
       kontroller, action = route.options.values
 
-      controller = Object.const_get("#{kontroller.capitalize}Controller")
-      controller.new(env, res).public_send(action)
+      controller = Object.const_get("#{kontroller.camel_case}Controller")
+      controller.new(env, response).public_send(action)
     end
 
     ##
@@ -43,9 +43,9 @@ module RapidRunty
     # @param [Rack::Response]
     #
     # @return [Rack::Response]
-    def not_found(res, path)
-      res.status = 404
-      res.write "
+    def not_found(response, path)
+      response.status = 404
+      response.write "
       <html>
         <head>
           <body>
@@ -58,10 +58,10 @@ module RapidRunty
 
     private
 
-    def route_args(req)
+    def route_args(request)
       {
-        verb: req.request_method.downcase.to_sym,
-        path: Rack::Utils.unescape(req.path_info)
+        verb: request.request_method.downcase.to_sym,
+        path: Rack::Utils.unescape(request.path_info)
       }
     end
   end

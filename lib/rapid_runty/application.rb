@@ -1,5 +1,5 @@
-require 'rapid_runty/routing'
-require 'rapid_runty/base_controller'
+require 'rapid_runty/router/base_route'
+require 'rapid_runty/controller/base_controller'
 
 module RapidRunty
   ##
@@ -20,11 +20,11 @@ module RapidRunty
     #
     # @return [status, {headers}, [response]]
     def call(env)
-      req = Rack::Request.new(env)
-      res = Rack::Response.new
+      request = Rack::Request.new(env)
+      response = Rack::Response.new
 
-      handle(env, req, res)
-      res.finish
+      handle(env, request, response)
+      response.finish
     end
   end
 end
