@@ -1,4 +1,6 @@
-require 'rapid_runty/routes/matcher'
+require 'rapid_runty/router/route_parser'
+require 'rapid_runty/router/route'
+require 'rapid_runty/router/matcher'
 
 module RapidRunty
   module Router
@@ -6,7 +8,7 @@ module RapidRunty
     # This class registers all routes defined by the draw method.
     class Routes < Array
       def add(*args)
-        self << Route.new(*args)
+        self << RapidRunty::Router::Route.new(*args)
       end
 
       ##
@@ -18,22 +20,30 @@ module RapidRunty
       # @return A RapidRunty::Router::Route Instance:
       #
       # Example:
-      #   RapidRunty::Router::Routes.match("GET", "/foo/4") => #<RapidRunty::Router::Route options={"controller"=>"foo", "action"=>"bar"}, path="/foo/:id", placeholders=[], verb=:get
-      def match(verb, path)
+      #   RapidRunty::Router::Routes.find_route("GET", "/foo/4") => #<RapidRunty::Router::Route options={"controller"=>"foo", "action"=>"bar"}, path="/foo/:id", placeholders=[], verb=:get
+      def find_route(verb, path)
         return nil if empty?
 
         verb = verb.to_s.downcase.strip.to_sym
-
         routes = select { |route| route.verb == verb }
-        urls = routes.map { |route| { url: route.path }.merge route.options }
 
-        url, var, action, param = RapidRunty::Router::Matcher.match(path, urls)
+        urls = select_routes_by_verb(verb, routes)
+
+        find_matching_route(path, urls, routes)
+      end
+
+      def select_routes_by_verb(_verb, routes)
+        urls = routes.map { |route| { url: route.path }.merge route.options }
+        urls
+      end
+
+      def find_matching_route(path, urls, routes)
+        url, placeholders, controller_action = RapidRunty::Router::Matcher.new.match(path, urls)
         return nil if url.nil?
 
         route = routes.detect { |router| router.path == url }.clone
-        route.placeholders = var
-        route.placeholder_hash = param
-        route.options = action
+        route.placeholders = placeholders
+        route.options = controller_action
         route
       end
 
@@ -64,28 +74,6 @@ module RapidRunty
         define_method(method_name) do |path, options|
           add(method_name.to_sym, path, options)
         end
-      end
-    end
-
-    class Route
-      attr_accessor :verb, :path, :options, :placeholders, :placeholder_hash
-
-      def initialize(verb, path, options)
-        self.verb = verb
-        self.path = path
-        self.options = options
-        self.placeholders = nil
-        self.placeholder_hash = nil
-      end
-
-      def to_a
-        [
-          {
-            verb: verb,
-            path: path,
-            placeholders:  placeholders
-          }.merge(options)
-        ]
       end
     end
   end

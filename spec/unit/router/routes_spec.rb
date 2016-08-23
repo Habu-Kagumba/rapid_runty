@@ -14,32 +14,31 @@ describe RapidRunty::Router::Routes do
   describe 'matches incoming paths (from Rack env)' do
     it 'matches the root path' do
       expect(
-        routes.match('GET', '/')
+        routes.find_route('GET', '/')
       ).not_to be_nil
     end
 
     it 'returns matched path Router instance with all params' do
       expect(
-        routes.match('GET', '/demo')
+        routes.find_route('GET', '/demo')
       ).not_to be_nil
 
       expect(
-        routes.match('GET', '/demo').path
+        routes.find_route('GET', '/demo').path
       ).to be_eql '/demo'
 
       expect(
-        routes.match('GET', '/demo/4').placeholders
-      ).to be_eql ['4']
+        routes.find_route('GET', '/demo/4').placeholders
+      ).to be_eql ({'id' => '4'})
 
       expect(
-        routes.match('GET', '/demo').options
-      ).to be_eql RapidRunty::Router::Matcher::ControllerSetup
-        .controller_action 'demo#index'
+        routes.find_route('GET', '/demo').options
+      ).to be_eql RapidRunty::Router::Matcher.new.controller_action 'demo#index'
     end
 
     it 'returns nil when there are no matches' do
       expect(
-        routes.match('GET', '/foo')
+        routes.find_route('GET', '/foo')
       ).to be_nil
     end
   end

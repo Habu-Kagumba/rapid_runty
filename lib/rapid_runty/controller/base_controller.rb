@@ -2,11 +2,11 @@ module RapidRunty
   ##
   # Application base controller
   class BaseController
-    attr_reader :env, :res
+    attr_reader :env, :response
 
-    def initialize(env, res)
+    def initialize(env, response)
       @env = env
-      @res = res
+      @response = response
     end
 
     ##
@@ -54,7 +54,7 @@ module RapidRunty
     ##
     # Redirect response method
     def redirect_to(path)
-      res.redirect path
+      response.redirect path
     end
 
     private
