@@ -43,4 +43,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'bundler', '~> 1.12'
   spec.add_dependency 'thor', '~> 0.19'
   spec.add_dependency 'tilt', '~> 2.0'
+  spec.add_dependency 'sqlite3', '~> 1.3'
 end
