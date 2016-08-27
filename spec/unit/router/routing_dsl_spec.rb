@@ -25,7 +25,7 @@ describe RapidRunty do
         'verb' => %s(get),
         'options' => {:to => %Q(demo#index)},
         'path' => %Q(/demo),
-        'placeholders' => nil
+        'placeholders' => {}
       )
     end
   end
@@ -39,7 +39,7 @@ describe RapidRunty do
         'verb' => %s(post),
         'options' => {:to => %Q(demo#create)},
         'path' => %Q(/demo),
-        'placeholders' => nil
+        'placeholders' => {}
       )
     end
   end
@@ -53,7 +53,7 @@ describe RapidRunty do
         'verb' => %s(put),
         'options' => {:to => %Q(demo#update)},
         'path' => %Q(/demo/:id),
-        'placeholders' => nil
+        'placeholders' => {}
       )
     end
   end
@@ -67,7 +67,7 @@ describe RapidRunty do
         'verb' => %s(patch),
         'options' => {:to => %Q(demo#update)},
         'path' => %Q(/demo/:id),
-        'placeholders' => nil
+        'placeholders' => {}
       )
     end
   end
@@ -81,7 +81,7 @@ describe RapidRunty do
         'verb' => %s(delete),
         'options' => {:to => %Q(demo#destroy)},
         'path' => %Q(/demo/:id),
-        'placeholders' => nil
+        'placeholders' => {}
       )
     end
   end

@@ -22,10 +22,7 @@ module RapidRunty
     # @return [status, {headers}, [response]]
     def call(env)
       request = Rack::Request.new(env)
-      response = Rack::Response.new
-
-      handle(env, request, response)
-      response.finish
+      handle(env, request)
     end
   end
 end
