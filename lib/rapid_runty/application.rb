@@ -1,5 +1,6 @@
 require 'rapid_runty/router/base_route'
 require 'rapid_runty/controller/base_controller'
+require 'rapid_runty/model/base'
 
 module RapidRunty
   ##
