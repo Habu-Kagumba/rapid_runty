@@ -20,6 +20,7 @@ require 'rspec'
 require 'rack/test'
 require 'capybara/rspec'
 require 'support/todoList/config/application'
+require 'support/factory_girl'
 
 RSpec.configure do |config|
   config.include Rack::Test::Methods
