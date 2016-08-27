@@ -20,12 +20,6 @@ describe 'BaseRoute' do
       expect(make_request.ok?).to be_truthy
     end
 
-    it 'sets the query strings' do
-      make_request = request.get 'todo/3?rapid=runty'
-
-      expect(make_request.body).to include 'rapid'
-    end
-
     it 'return a 404 error for non-existent urls' do
       make_request = request.get '/nowhere'
 
