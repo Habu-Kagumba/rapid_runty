@@ -32,7 +32,7 @@ module RapidRunty
         find_matching_route(path, urls, routes)
       end
 
-      def select_routes_by_verb(_verb, routes)
+      def select_routes_by_verb(verb, routes)
         urls = routes.map { |route| { url: route.path }.merge route.options }
         urls
       end

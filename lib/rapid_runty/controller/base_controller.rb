@@ -2,11 +2,17 @@ module RapidRunty
   ##
   # Application base controller
   class BaseController
-    attr_reader :env, :response
+    attr_reader :env, :request
 
-    def initialize(env, response)
+    def initialize(env, request)
       @env = env
-      @response = response
+      @request = request
+    end
+
+    def call_action(action)
+      send(action)
+      render unless @response
+      @response
     end
 
     ##
@@ -14,7 +20,9 @@ module RapidRunty
     #
     # @return [Hash] Hash of url parameters
     def params
-      @params ||= Rack::Utils.parse_nested_query(env['QUERY_STRING'])
+      @params ||= request.params.merge(
+        Rack::Utils.parse_nested_query(env['QUERY_STRING'])
+      )
     end
 
     ##
@@ -22,9 +30,11 @@ module RapidRunty
     #
     # @param [String] file name for the template
     def render(view = controller_action)
-      render_template(layout) do
+      body = render_template(layout) do
         render_template(view)
       end
+
+      response(body, 200, {})
     end
 
     ##
@@ -61,6 +71,10 @@ module RapidRunty
 
     def controller_action
       File.join(env['controller'], env['action'])
+    end
+
+    def response(body, status = 200, header = {})
+      @response = Rack::Response.new(body, status, header)
     end
   end
 end

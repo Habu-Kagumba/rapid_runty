@@ -9,7 +9,7 @@ module RapidRunty
         self.verb = verb
         self.path = path
         self.options = options
-        self.placeholders = nil
+        self.placeholders = {}
       end
     end
   end
