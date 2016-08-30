@@ -53,8 +53,8 @@ module RapidRunty
 
     ##
     # Redirect response method
-    def redirect_to(path)
-      response.redirect path
+    def redirect_to(location)
+      response([], 302, 'Location' => location)
     end
 
     private

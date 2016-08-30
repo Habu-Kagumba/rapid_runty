@@ -43,17 +43,22 @@ module RapidRunty
     # @param [Rack::Response]
     #
     # @return [Rack::Response]
-    def not_found(response, path)
-      response.status = 404
-      response.write "
-      <html>
-        <head>
-          <body>
-            <h1>404 Page not found for #{path}</h1>
-          </body>
-        </head>
-      </html>
-      "
+    def not_found(path)
+      [
+        404,
+        {},
+        [
+          "
+          <html>
+            <head>
+              <body>
+                <h1>404 Page not found for #{path}</h1>
+              </body>
+            </head>
+          </html>
+          "
+        ]
+      ]
     end
 
     private
