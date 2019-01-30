@@ -37,12 +37,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'guard-rspec', '~> 4.7'
 
   spec.add_development_dependency 'yard', '~> 0.9'
-  spec.add_development_dependency 'rubocop', '~> 0.42'
-  spec.add_development_dependency 'brakeman', '~> 3.3'
-  spec.add_development_dependency 'rubycritic', '~> 2.9'
 
   spec.add_dependency 'rack', '~> 2.0'
-  spec.add_dependency 'bundler', '~> 1.12'
+  spec.add_dependency 'bundler', '~> 2.0'
   spec.add_dependency 'thor', '~> 0.19'
   spec.add_dependency 'tilt', '~> 2.0'
   spec.add_dependency 'sqlite3', '~> 1.3'
